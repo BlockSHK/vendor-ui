@@ -15,10 +15,7 @@ import {
 const INFURA_ID = "2QSqx8RXM2BuNuWHMXV67dEfP08";
 const INFURA_SECRET_KEY = "041da3f3de9aff368b13e103f8fec4a7";
 
-const auth =
-  "Basic " +
-  Buffer.from(INFURA_ID + ":" + INFURA_SECRET_KEY).toString("base64");
-
+const auth = "Basic " + btoa(INFURA_ID + ":" + INFURA_SECRET_KEY);
 export default class Create extends Component {
   constructor(props) {
     super(props);
@@ -64,8 +61,9 @@ export default class Create extends Component {
           },
         }
       );
+      console.log(result);
       this.setState({
-        metadata: `https://ipfs.infura.io/ipfs/${result.data.Hash}`,
+        metadata: `https://ipfs.io/ipfs/${result.data.Hash}`,
       });
     } catch (error) {
       console.error("Upload to IPFS failed:", error);
