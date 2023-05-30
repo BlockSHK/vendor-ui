@@ -207,12 +207,20 @@ export default class Create extends Component {
           />
         )}
         {type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION" && (
-          <TextField
-            label="Payment Token"
-            name="paymentToken"
-            onChange={this.handleChange}
-            fullWidth
-          />
+          <FormControl fullWidth>
+            <InputLabel id="paymentToken-label">Payment Token</InputLabel>
+            <Select
+              labelId="paymentToken-label"
+              label="Payment Token"
+              name="paymentToken"
+              value={this.state.paymentToken}
+              onChange={this.handleChange}
+            >
+              <MenuItem value={"0x3424FfB2222C88F8bD7EB0179c483623cf05a4F9"}>
+                MapCoin
+              </MenuItem>
+            </Select>
+          </FormControl>
         )}
         <Button type="submit" variant="contained" color="primary">
           Create
