@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/vendor-ui/static/css/main.5bd8ef50.css",
-    "main.js": "/vendor-ui/static/js/main.77a2b010.js",
+    "main.js": "/vendor-ui/static/js/main.84809737.js",
     "static/media/BlockSHK.png": "/vendor-ui/static/media/BlockSHK.de59bf600d92ef47c642.png",
     "index.html": "/vendor-ui/index.html",
     "main.5bd8ef50.css.map": "/vendor-ui/static/css/main.5bd8ef50.css.map",
-    "main.77a2b010.js.map": "/vendor-ui/static/js/main.77a2b010.js.map"
+    "main.84809737.js.map": "/vendor-ui/static/js/main.84809737.js.map"
   },
   "entrypoints": [
     "static/css/main.5bd8ef50.css",
-    "static/js/main.77a2b010.js"
+    "static/js/main.84809737.js"
   ]
 }
