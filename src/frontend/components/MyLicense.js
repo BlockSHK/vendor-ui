@@ -44,43 +44,6 @@ export default class MyLicense extends Component {
   };
 
   renderLicenseCards = (licenses) => {
-    const perpetualLicenses = licenses.filter(
-      (license) => license.type === "CONTRACT_PERPETUAL"
-    );
-    const fixedLicenses = licenses.filter(
-      (license) => license.type === "CONTRACT_FIXED_SUBSCRIPTION"
-    );
-    const autoRenewLicenses = licenses.filter(
-      (license) => license.type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION"
-    );
-
-    return (
-      <>
-        <Typography variant="h4" align="center" gutterBottom>
-          Perpetual Licenses
-        </Typography>
-        <Grid container spacing={4}>
-          {this.renderLicenseCategory(perpetualLicenses)}
-        </Grid>
-
-        <Typography variant="h4" align="center" gutterBottom>
-          Fixed Subscription Licenses
-        </Typography>
-        <Grid container spacing={4}>
-          {this.renderLicenseCategory(fixedLicenses)}
-        </Grid>
-
-        <Typography variant="h4" align="center" gutterBottom>
-          Auto Renew Subscription Licenses
-        </Typography>
-        <Grid container spacing={4}>
-          {this.renderLicenseCategory(autoRenewLicenses)}
-        </Grid>
-      </>
-    );
-  };
-
-  renderLicenseCategory = (licenses) => {
     return licenses.map((license) => (
       <Grid item key={license.id} xs={12} sm={6} md={4}>
         <Card>
@@ -115,8 +78,37 @@ export default class MyLicense extends Component {
     ));
   };
 
+  renderLicenseCategory = (licenses, category) => {
+    return (
+      <div>
+        <Typography variant="h4" align="left" gutterBottom>
+          {category} Licenses
+        </Typography>
+        {licenses.length > 0 ? (
+          <Grid container spacing={4}>
+            {this.renderLicenseCards(licenses)}
+          </Grid>
+        ) : (
+          <Typography variant="h6" align="center" gutterBottom>
+            No {category} Licenses
+          </Typography>
+        )}
+      </div>
+    );
+  };
+
   render() {
     const { licenses, error } = this.state;
+
+    const perpetualLicenses = licenses.filter(
+      (license) => license.type === "CONTRACT_PERPETUAL"
+    );
+    const fixedLicenses = licenses.filter(
+      (license) => license.type === "CONTRACT_FIXED_SUBSCRIPTION"
+    );
+    const autoRenewLicenses = licenses.filter(
+      (license) => license.type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION"
+    );
 
     return (
       <Container maxWidth="md">
@@ -124,12 +116,11 @@ export default class MyLicense extends Component {
           My Licenses
         </Typography>
 
-        {licenses.length > 0 ? (
-          this.renderLicenseCards(licenses)
-        ) : (
-          <Typography variant="h6" align="center" gutterBottom>
-            No Licenses
-          </Typography>
+        {this.renderLicenseCategory(perpetualLicenses, "Perpetual")}
+        {this.renderLicenseCategory(fixedLicenses, "Fixed Subscription")}
+        {this.renderLicenseCategory(
+          autoRenewLicenses,
+          "Auto Renew Subscription"
         )}
 
         {error && (
