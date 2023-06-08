@@ -10,6 +10,13 @@ import {
   Typography,
   Grid,
   Container,
+  Paper,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 
 export default class Deploy extends Component {
@@ -18,6 +25,8 @@ export default class Deploy extends Component {
     this.state = {
       licenses: [],
       error: null,
+      isLoading: true,
+      isDialogOpen: false,
     };
 
     this.provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -39,14 +48,19 @@ export default class Deploy extends Component {
           },
         }
       );
-      this.setState({ licenses: response.data.payload.records, error: null });
+      this.setState({
+        licenses: response.data.payload.records,
+        error: null,
+        isLoading: false,
+      });
     } catch (error) {
-      this.setState({ error: error.message, licenses: [] });
+      this.setState({ error: error.message, licenses: [], isLoading: false });
     }
   };
 
   deployLicense = async (license) => {
     try {
+      this.setState({ isDialogOpen: true });
       license.contract = { blockchain: "ETHEREUM" };
       const response = await axios.post(
         `https://b1r5aq31x2.execute-api.us-east-1.amazonaws.com/Prod/deploy/${license.id}`,
@@ -56,6 +70,10 @@ export default class Deploy extends Component {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  handleDialogClose = () => {
+    this.setState({ isDialogOpen: false });
   };
 
   renderLicenseCards = (licenses) => {
@@ -102,32 +120,51 @@ export default class Deploy extends Component {
       </Grid>
     ));
   };
-
   render() {
-    const { licenses, error } = this.state;
+    const { licenses, error, isLoading, isDialogOpen } = this.state;
 
     return (
       <Container maxWidth="md">
-        <Typography variant="h2" align="center" gutterBottom>
-          License To Deploy
-        </Typography>
-
-        {licenses.length > 0 ? (
-          <Grid container spacing={4}>
-            {this.renderLicenseCards(licenses)}
-          </Grid>
-        ) : (
-          <Typography variant="h6" align="center" gutterBottom>
-            No Licenses
+        <Paper style={{ margin: "16px", padding: "16px", textAlign: "center" }}>
+          <Typography variant="h2" gutterBottom>
+            License To Deploy
           </Typography>
-        )}
 
-        {error && (
-          <div>
-            <h2>Error:</h2>
-            <p>{error}</p>
-          </div>
-        )}
+          {isLoading ? (
+            <CircularProgress />
+          ) : licenses.length > 0 ? (
+            <Grid container spacing={4}>
+              {this.renderLicenseCards(licenses)}
+            </Grid>
+          ) : (
+            <Typography variant="h6" gutterBottom>
+              No Licenses
+            </Typography>
+          )}
+
+          {error && (
+            <Paper style={{ margin: "16px", padding: "16px" }}>
+              <Typography variant="h6" align="center" gutterBottom>
+                Error:
+              </Typography>
+              <Typography variant="body2" align="center">
+                {error}
+              </Typography>
+            </Paper>
+          )}
+        </Paper>
+
+        <Dialog open={isDialogOpen} onClose={this.handleDialogClose}>
+          <DialogTitle>{"Deploy License"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Your deploy license request has been sent.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleDialogClose}>OK</Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     );
   }
