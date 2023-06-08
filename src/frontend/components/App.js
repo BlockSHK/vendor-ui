@@ -57,9 +57,10 @@ function App() {
           ) : (
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/create-license" element={<Create />} />
-              <Route path="/deploy-license" element={<Deploy />} />
-              <Route path="/my-license" element={<MyLicense />} />
+              <Route path="/vendor-ui" element={<Home />} />
+              <Route path="/vendor-ui/create-license" element={<Create />} />
+              <Route path="/vendor-ui/deploy-license" element={<Deploy />} />
+              <Route path="/vendor-ui/my-license" element={<MyLicense />} />
             </Routes>
           )}
         </div>

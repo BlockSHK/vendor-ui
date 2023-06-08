@@ -11,11 +11,13 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
+import { utils } from "ethers";
 
 const INFURA_ID = "2QSqx8RXM2BuNuWHMXV67dEfP08";
 const INFURA_SECRET_KEY = "041da3f3de9aff368b13e103f8fec4a7";
 
 const auth = "Basic " + btoa(INFURA_ID + ":" + INFURA_SECRET_KEY);
+
 export default class Create extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +28,7 @@ export default class Create extends Component {
       name: "",
       owner: "",
       price: "",
+      priceUnit: "wei",
       metadata: "",
       software: "",
       status: "ACTIVE",
@@ -72,9 +75,31 @@ export default class Create extends Component {
 
   async handleSubmit(event) {
     event.preventDefault();
-    const data = { ...this.state };
+    let data = { ...this.state };
     delete data.response;
     delete data.error;
+
+    if (
+      data.type === "CONTRACT_FIXED_SUBSCRIPTION" ||
+      data.type === "CONTRACT_PERPETUAL"
+    ) {
+      let priceInWei;
+      switch (data.priceUnit) {
+        case "wei":
+          priceInWei = data.price;
+          break;
+        case "gwei":
+          priceInWei = utils.parseUnits(data.price, "gwei");
+          break;
+        case "eth":
+          priceInWei = utils.parseEther(data.price);
+          break;
+        default:
+          priceInWei = data.price;
+      }
+      data.price = priceInWei;
+    }
+
     try {
       const response = await axios.post(
         "https://b1r5aq31x2.execute-api.us-east-1.amazonaws.com/Prod/create",
@@ -87,7 +112,7 @@ export default class Create extends Component {
   }
 
   render() {
-    const { response, error, type } = this.state;
+    const { response, error, type, priceUnit } = this.state;
 
     return (
       <Box
@@ -104,6 +129,7 @@ export default class Create extends Component {
           minHeight: "100vh",
           width: "50%",
           margin: "0 auto",
+          marginTop: "2vh",
           boxSizing: "border-box",
           padding: "1em",
           border: "1px solid #ddd",
@@ -143,12 +169,74 @@ export default class Create extends Component {
           onChange={this.handleChange}
           fullWidth
         />
+
+        <FormControl fullWidth>
+          <InputLabel id="type-label">Type</InputLabel>
+          <Select
+            labelId="type-label"
+            value={type}
+            label="Type"
+            name="type"
+            onChange={this.handleChange}
+          >
+            <MenuItem value={"CONTRACT_PERPETUAL"}>Perpetual License</MenuItem>
+            <MenuItem value={"CONTRACT_FIXED_SUBSCRIPTION"}>
+              Fixed Subscription
+            </MenuItem>
+            <MenuItem value={"CONTRACT_AUTO_RENEW_SUBSCRIPTION"}>
+              Auto Renew Subscription
+            </MenuItem>
+          </Select>
+        </FormControl>
+
         <TextField
           label="Price"
           name="price"
           onChange={this.handleChange}
           fullWidth
         />
+        {(type === "CONTRACT_FIXED_SUBSCRIPTION" ||
+          type === "CONTRACT_PERPETUAL") && (
+          <FormControl fullWidth>
+            <InputLabel id="priceUnit-label">Price Unit</InputLabel>
+            <Select
+              labelId="priceUnit-label"
+              value={priceUnit}
+              label="Price Unit"
+              name="priceUnit"
+              onChange={this.handleChange}
+            >
+              <MenuItem value="wei">wei</MenuItem>
+              <MenuItem value="gwei">gwei</MenuItem>
+              <MenuItem value="eth">eth</MenuItem>
+            </Select>
+          </FormControl>
+        )}
+        {(type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION" ||
+          type === "CONTRACT_FIXED_SUBSCRIPTION") && (
+          <TextField
+            label="Subscription Period"
+            name="subscriptionPeriod"
+            onChange={this.handleChange}
+            fullWidth
+          />
+        )}
+        {type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION" && (
+          <FormControl fullWidth>
+            <InputLabel id="paymentToken-label">Payment Token</InputLabel>
+            <Select
+              labelId="paymentToken-label"
+              label="Payment Token"
+              name="paymentToken"
+              value={this.state.paymentToken}
+              onChange={this.handleChange}
+            >
+              <MenuItem value={"0x3424FfB2222C88F8bD7EB0179c483623cf05a4F9"}>
+                MapCoin
+              </MenuItem>
+            </Select>
+          </FormControl>
+        )}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -179,49 +267,6 @@ export default class Create extends Component {
           onChange={this.handleChange}
           fullWidth
         />
-        <FormControl fullWidth>
-          <InputLabel id="type-label">Type</InputLabel>
-          <Select
-            labelId="type-label"
-            value={type}
-            label="Type"
-            name="type"
-            onChange={this.handleChange}
-          >
-            <MenuItem value={"CONTRACT_PERPETUAL"}>Perpetual License</MenuItem>
-            <MenuItem value={"CONTRACT_FIXED_SUBSCRIPTION"}>
-              Fixed Subscription
-            </MenuItem>
-            <MenuItem value={"CONTRACT_AUTO_RENEW_SUBSCRIPTION"}>
-              Auto Renew Subscription
-            </MenuItem>
-          </Select>
-        </FormControl>
-        {(type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION" ||
-          type === "CONTRACT_FIXED_SUBSCRIPTION") && (
-          <TextField
-            label="Subscription Period"
-            name="subscriptionPeriod"
-            onChange={this.handleChange}
-            fullWidth
-          />
-        )}
-        {type === "CONTRACT_AUTO_RENEW_SUBSCRIPTION" && (
-          <FormControl fullWidth>
-            <InputLabel id="paymentToken-label">Payment Token</InputLabel>
-            <Select
-              labelId="paymentToken-label"
-              label="Payment Token"
-              name="paymentToken"
-              value={this.state.paymentToken}
-              onChange={this.handleChange}
-            >
-              <MenuItem value={"0x3424FfB2222C88F8bD7EB0179c483623cf05a4F9"}>
-                MapCoin
-              </MenuItem>
-            </Select>
-          </FormControl>
-        )}
         <Button type="submit" variant="contained" color="primary">
           Create
         </Button>

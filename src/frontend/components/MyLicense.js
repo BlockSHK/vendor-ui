@@ -2,20 +2,33 @@ import React, { Component } from "react";
 import axios from "axios";
 import { ethers } from "ethers";
 import {
+  Box,
   Card,
   CardMedia,
   CardContent,
+  CardActions,
   Typography,
   Grid,
   Container,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Paper,
+  CircularProgress,
 } from "@mui/material";
 
-export default class MyLicense extends Component {
+class MyLicense extends Component {
   constructor(props) {
     super(props);
     this.state = {
       licenses: [],
       error: null,
+      openDialog: false,
+      licenseDetail: null,
+      loading: true,
     };
 
     this.provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -25,7 +38,6 @@ export default class MyLicense extends Component {
   componentDidMount() {
     this.fetchLicenses();
   }
-
   fetchLicenses = async () => {
     try {
       const owner = await this.signer.getAddress();
@@ -37,10 +49,22 @@ export default class MyLicense extends Component {
           },
         }
       );
-      this.setState({ licenses: response.data.payload.records, error: null });
+      this.setState({
+        licenses: response.data.payload.records,
+        loading: false,
+        error: null,
+      });
     } catch (error) {
-      this.setState({ error: error.message, licenses: [] });
+      this.setState({ error: error.message, licenses: [], loading: false });
     }
+  };
+
+  handleOpenLicenseDetail = (license) => {
+    this.setState({ licenseDetail: license, openDialog: true });
+  };
+
+  handleCloseDialog = () => {
+    this.setState({ openDialog: false, licenseDetail: null });
   };
 
   renderLicenseCards = (licenses) => {
@@ -59,28 +83,61 @@ export default class MyLicense extends Component {
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Software ID: {license.software}
-              <br />
-              Type: {license.type}
-              <br />
-              Description: {license.description}
-              <br />
-              Price: {license.price}
-              <br />
-              Status: {license.status}
-              <br />
-              Company: {license.company}
-              <br />
-              Owner: {license.owner}
             </Typography>
           </CardContent>
+          <CardActions>
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => this.handleOpenLicenseDetail(license)}
+            >
+              View
+            </Button>
+          </CardActions>
         </Card>
       </Grid>
     ));
   };
 
+  renderLicenseDetailDialog = (license) => {
+    return (
+      <Dialog open={this.state.openDialog} onClose={this.handleCloseDialog}>
+        <DialogTitle>{license ? license.name : ""}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Software ID: {license ? license.software : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Type: {license ? license.type : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Description: {license ? license.description : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Price: {license ? license.price : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Status: {license ? license.status : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Company: {license ? license.company : ""}
+          </DialogContentText>
+          <DialogContentText>
+            Owner: {license ? license.owner : ""}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  };
+
   renderLicenseCategory = (licenses, category) => {
     return (
-      <div>
+      <Paper style={{ margin: "16px", padding: "16px" }}>
         <Typography variant="h4" align="left" gutterBottom>
           {category} Licenses
         </Typography>
@@ -93,12 +150,12 @@ export default class MyLicense extends Component {
             No {category} Licenses
           </Typography>
         )}
-      </div>
+      </Paper>
     );
   };
 
   render() {
-    const { licenses, error } = this.state;
+    const { licenses, error, loading } = this.state;
 
     const perpetualLicenses = licenses.filter(
       (license) => license.type === "CONTRACT_PERPETUAL"
@@ -111,25 +168,51 @@ export default class MyLicense extends Component {
     );
 
     return (
-      <Container maxWidth="md">
-        <Typography variant="h2" align="center" gutterBottom>
-          My Licenses
-        </Typography>
+      <Box
+        style={{
+          backgroundImage: 'url("/path/to/your/background.jpg")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <Container maxWidth="md">
+          {loading ? (
+            <Box display="flex" justifyContent="center" mt={5}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <React.Fragment>
+              <Paper style={{ margin: "16px", padding: "16px" }}>
+                <Typography variant="h4" align="center" gutterBottom>
+                  My Licenses
+                </Typography>
+              </Paper>
 
-        {this.renderLicenseCategory(perpetualLicenses, "Perpetual")}
-        {this.renderLicenseCategory(fixedLicenses, "Fixed Subscription")}
-        {this.renderLicenseCategory(
-          autoRenewLicenses,
-          "Auto Renew Subscription"
-        )}
+              {this.renderLicenseCategory(perpetualLicenses, "Perpetual")}
+              {this.renderLicenseCategory(fixedLicenses, "Fixed Subscription")}
+              {this.renderLicenseCategory(
+                autoRenewLicenses,
+                "Auto Renew Subscription"
+              )}
 
-        {error && (
-          <div>
-            <h2>Error:</h2>
-            <p>{error}</p>
-          </div>
-        )}
-      </Container>
+              {error && (
+                <Paper style={{ margin: "16px", padding: "16px" }}>
+                  <Typography variant="h6" align="center" gutterBottom>
+                    Error
+                  </Typography>
+                  <Typography variant="body2" align="center">
+                    {error}
+                  </Typography>
+                </Paper>
+              )}
+
+              {this.renderLicenseDetailDialog(this.state.licenseDetail)}
+            </React.Fragment>
+          )}
+        </Container>
+      </Box>
     );
   }
 }
+
+export default MyLicense;
