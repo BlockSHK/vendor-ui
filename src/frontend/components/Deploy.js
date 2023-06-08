@@ -122,24 +122,27 @@ export default class Deploy extends Component {
   };
   render() {
     const { licenses, error, isLoading, isDialogOpen } = this.state;
+    const undeployedLicenses = licenses.filter((license) => !license.contract);
 
     return (
       <Container maxWidth="md">
         <Paper style={{ margin: "16px", padding: "16px", textAlign: "center" }}>
-          <Typography variant="h2" gutterBottom>
-            License To Deploy
+          <Typography variant="h4" gutterBottom padding={"1vh"}>
+            Deploy Licenses
           </Typography>
 
           {isLoading ? (
             <CircularProgress />
-          ) : licenses.length > 0 ? (
+          ) : undeployedLicenses.length > 0 ? (
             <Grid container spacing={4}>
-              {this.renderLicenseCards(licenses)}
+              {this.renderLicenseCards(undeployedLicenses)}
             </Grid>
           ) : (
-            <Typography variant="h6" gutterBottom>
-              No Licenses
-            </Typography>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <Typography variant="h6" gutterBottom>
+                No Licenses to Deploy
+              </Typography>
+            </div>
           )}
 
           {error && (
