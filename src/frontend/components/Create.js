@@ -129,6 +129,7 @@ export default class Create extends Component {
           minHeight: "100vh",
           width: "50%",
           margin: "0 auto",
+          marginTop: "2vh",
           boxSizing: "border-box",
           padding: "1em",
           border: "1px solid #ddd",
