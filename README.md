@@ -1,6 +1,6 @@
 # BlockSHK Vendor Application
 
-![Banner](./src/frontend/components/images/background_1.jpg)
+![Banner](./home_page.png)
 
 BlockSHK Vendor Application is an innovative solution designed to enable software vendors to create and deploy software licenses securely using blockchain technology. The application uses smart contracts, ensuring that licenses are immutable, transparent, and protected from duplication.
 
