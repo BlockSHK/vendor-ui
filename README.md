@@ -36,7 +36,7 @@ git clone https://github.com/BlockSHK/vendor-ui.git
 2. Navigate to the project directory
 
 ```
-git clone https://github.com/BlockSHK/vendor-ui.git
+cd vendor-ui
 ```
 
 3. Install dependencies
