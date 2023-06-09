@@ -1,70 +1,84 @@
-# Getting Started with Create React App
+# BlockSHK Vendor Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Banner](./src/frontend/components/images/background_1.jpg)
 
-## Available Scripts
+BlockSHK Vendor Application is an innovative solution designed to enable software vendors to create and deploy software licenses securely using blockchain technology. The application uses smart contracts, ensuring that licenses are immutable, transparent, and protected from duplication.
 
-In the project directory, you can run:
+The application boasts an intuitive user interface, which means even non-technical users can easily harness the power of blockchain for license management.
 
-### `npm start`
+This project is built with React and bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Create customizable software licenses
+- Deploy licenses as smart contracts on the blockchain
+- Monitor and manage licenses through an easy-to-use dashboard
+- Ensure security and tamper-resistance for licenses
+- Maintain transparency in licensing
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Make sure you have [Node.js](https://nodejs.org/en/) installed on your machine.
+- Install MetaMask as a browser extension. [Get MetaMask](https://metamask.io/download.html).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Clone the repository
 
-### `npm run eject`
+```
+git clone https://github.com/BlockSHK/vendor-ui.git
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Navigate to the project directory
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+git clone https://github.com/BlockSHK/vendor-ui.git
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. Install dependencies
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+npm install
+```
 
-## Learn More
+### Running the Application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Start the development server
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+npm start
+```
 
-### Code Splitting
+2. Open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Deployment
 
-### Analyzing the Bundle Size
+The application is deployed and accessible at [BlockSHK Vendor UI](https://blockshk.github.io/vendor-ui/).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+For more information on deploying applications created with Create React App, please refer to the [Create React App deployment documentation](https://facebook.github.io/create-react-app/docs/deployment).
 
-### Making a Progressive Web App
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+We welcome contributions from the community. Here's how you can contribute:
 
-### Advanced Configuration
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## License
 
-### Deployment
+Distributed under the MIT License. See `LICENSE` for more information.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Contact
 
-### `npm run build` fails to minify
+For any queries or further information, feel free to reach out to us:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Hithru: [hithru.18@cse.mrt.ac.lk](mailto:hithru.18@cse.mrt.ac.lk)
+
+Project Link: [https://github.com/BlockSHK/vendor-ui](https://github.com/BlockSHK/vendor-ui)
